@@ -96,44 +96,35 @@ export function Navbar() {
         </nav>
       </header>
 
-      {isMobileOpen && (
-        <div
-          id="mobile-menu"
-          className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Mobile navigation"
-          style={{
-            animation: shouldReduceMotion ? undefined : 'fadeIn 0.2s ease-out',
-          }}
-        >
-          <nav className="flex h-full flex-col items-center justify-center gap-8">
-            {navItems.map((item, i) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={closeMobile}
-                className="text-2xl font-semibold text-text-primary transition-colors hover:text-accent"
-                style={{
-                  animation: shouldReduceMotion ? undefined : `fadeInUp 0.4s ${i * 0.05}s cubic-bezier(0.16, 1, 0.3, 1) both`,
-                }}
-              >
-                {item.label}
-              </a>
-            ))}
+      <div
+        id="mobile-menu"
+        className={`mobile-menu-overlay fixed top-16 right-0 bottom-0 left-0 z-[9999] bg-background/95 backdrop-blur-xl md:hidden ${
+          isMobileOpen ? 'open' : ''
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation"
+      >
+        <nav className="flex h-full flex-col items-center justify-start gap-6 pt-12 pb-8 overflow-y-auto">
+          {navItems.map((item) => (
             <a
-              href="#contact"
+              key={item.href}
+              href={item.href}
               onClick={closeMobile}
-              className="mt-4 rounded-xl bg-[#2563eb] px-8 py-3 text-lg font-medium text-white"
-              style={{
-                animation: shouldReduceMotion ? undefined : `fadeInUp 0.4s ${navItems.length * 0.05}s cubic-bezier(0.16, 1, 0.3, 1) both`,
-              }}
+              className="mobile-menu-item text-2xl font-semibold text-text-primary transition-colors hover:text-accent"
             >
-              Let&apos;s Talk
+              {item.label}
             </a>
-          </nav>
-        </div>
-      )}
+          ))}
+          <a
+            href="#contact"
+            onClick={closeMobile}
+            className="mobile-menu-item mt-4 rounded-xl bg-[#2563eb] px-8 py-3 text-lg font-medium text-white"
+          >
+            Let&apos;s Talk
+          </a>
+        </nav>
+      </div>
     </>
   );
 }
