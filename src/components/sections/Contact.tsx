@@ -6,7 +6,7 @@ import { socialLinks, email, phone, location } from '@/data/socials';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { GlowCard } from '@/components/ui/GlowCard';
 
-const FORMSPREE_ENDPOINT = 'https://formspree.io/f/your_form_id';
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xlgqgjrl';
 
 const contactInfo = [
   { icon: Mail, label: 'Email', value: email, href: `mailto:${email}` },
