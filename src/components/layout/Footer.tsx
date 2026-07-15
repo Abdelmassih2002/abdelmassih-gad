@@ -34,11 +34,6 @@ export function Footer() {
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 text-sm text-text-muted sm:flex-row">
           <p>&copy; {new Date().getFullYear()} Abdelmassih Gad. All rights reserved.</p>
-          <p>
-            Built with{' '}
-            <span className="text-accent">React</span> +{' '}
-            <span className="text-accent">Tailwind CSS</span>
-          </p>
         </div>
       </div>
     </footer>

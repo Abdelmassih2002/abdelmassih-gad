@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Send, Mail, Phone, MapPin } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from '@/components/ui/Icons';
+import { GithubIcon, LinkedinIcon, MailIcon } from '@/components/ui/Icons';
 import { socialLinks, email, phone, location } from '@/data/socials';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { GlowCard } from '@/components/ui/GlowCard';
@@ -17,6 +17,7 @@ const contactInfo = [
 function SocialIconByName({ name, className }: { name: string; className?: string }) {
   if (name === 'GitHub') return <GithubIcon className={className} />;
   if (name === 'LinkedIn') return <LinkedinIcon className={className} />;
+  if (name === 'Email') return <MailIcon className={className} />;
   return null;
 }
 

@@ -1,5 +1,4 @@
-import { Mail } from 'lucide-react';
-import { GithubIcon, LinkedinIcon } from '@/components/ui/Icons';
+import { GithubIcon, LinkedinIcon, MailIcon } from '@/components/ui/Icons';
 import type { ComponentType, SVGProps } from 'react';
 
 export interface SocialLink {
@@ -11,7 +10,7 @@ export interface SocialLink {
 export const socialLinks: SocialLink[] = [
   { name: 'GitHub', url: 'https://github.com/Abdelmassih2002', icon: GithubIcon },
   { name: 'LinkedIn', url: 'https://www.linkedin.com/in/abdelmassih-gad/', icon: LinkedinIcon },
-  { name: 'Email', url: 'mailto:abdelmassihramsis@gmail.com', icon: Mail },
+  { name: 'Email', url: 'mailto:abdelmassihramsis@gmail.com', icon: MailIcon },
 ];
 
 export const email = 'abdelmassihramsis@gmail.com';
