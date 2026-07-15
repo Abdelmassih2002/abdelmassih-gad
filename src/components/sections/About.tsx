@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 import { Code2, Palette, Zap, Trophy } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { GlowCard } from '@/components/ui/GlowCard';
@@ -32,6 +33,9 @@ const highlights = [
 
 export function About() {
   const shouldReduceMotion = useReducedMotion();
+  const bio = useInView({ disabled: shouldReduceMotion, rootMargin: '-60px' });
+  const stat0 = useInView({ disabled: shouldReduceMotion, rootMargin: '-40px' });
+  const stat1 = useInView({ disabled: shouldReduceMotion, rootMargin: '-40px' });
 
   return (
     <section id="about" className="relative py-24 sm:py-32">
@@ -45,12 +49,9 @@ export function About() {
 
         <div className="grid gap-12 lg:grid-cols-5">
           {/* Left - Bio */}
-          <motion.div
-            initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="lg:col-span-2"
+          <div
+            ref={bio.ref}
+            className={`lg:col-span-2 anim-fade-left ${bio.inView ? 'in-view' : ''}`}
           >
             <div className="space-y-4 text-base leading-relaxed text-text-muted">
               <p>
@@ -76,20 +77,18 @@ export function About() {
                 { value: 'B.Sc. CS', label: 'Degree (2024)' },
                 { value: '20+', label: 'Repos on GitHub' },
               ].map((stat, i) => (
-                <motion.div
+                <div
                   key={stat.label}
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: shouldReduceMotion ? 0 : i * 0.1 + 0.2 }}
-                  className="rounded-xl border border-border bg-card p-4 text-center"
+                  ref={i === 0 ? stat0.ref : stat1.ref}
+                  className={`rounded-xl border border-border bg-card p-4 text-center anim-fade-up-sm ${(i === 0 ? stat0 : stat1).inView ? 'in-view' : ''}`}
+                  style={{ transitionDelay: `${i * 0.1 + 0.2}s` }}
                 >
                   <div className="text-lg font-bold text-accent">{stat.value}</div>
                   <div className="mt-1 text-xs text-text-muted">{stat.label}</div>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Right - Highlight Cards */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:col-span-3">

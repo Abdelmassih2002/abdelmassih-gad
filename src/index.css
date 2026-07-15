@@ -311,3 +311,80 @@ body::before {
 .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
 .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
 .stagger-children > *:nth-child(7) { animation-delay: 0.7s; }
+
+/* ===== SCROLL-TRIGGERED ANIMATIONS ===== */
+.anim-fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.anim-fade-left {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-fade-left.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.anim-fade-right {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-fade-right.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.anim-fade-up-sm {
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-fade-up-sm.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.anim-scale-in {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-scale-in.in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Modal backdrop */
+.anim-fade {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.anim-fade.open {
+  opacity: 1;
+}
+
+/* Modal content */
+.anim-modal-in {
+  opacity: 0;
+  transform: scale(0.97) translateY(12px);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anim-modal-in.open {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}

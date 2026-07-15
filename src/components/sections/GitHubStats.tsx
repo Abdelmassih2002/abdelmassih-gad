@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 import { Code2, Trophy, GraduationCap, Users } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/Icons';
 import { SectionHeading } from '@/components/ui/SectionHeading';
@@ -28,20 +29,7 @@ export function GitHubStats() {
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-4">
             {stats.map((stat, i) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: shouldReduceMotion ? 0 : 0.3, delay: shouldReduceMotion ? 0 : i * 0.05 }}
-                className="rounded-2xl border border-border bg-card p-5 text-center transition-[border-color] duration-300 hover:border-accent/20"
-              >
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10">
-                  <stat.icon size={20} className="text-accent" aria-hidden="true" />
-                </div>
-                <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
-                <div className="mt-1 text-xs text-text-muted">{stat.label}</div>
-              </motion.div>
+              <StatCard key={stat.label} stat={stat} index={i} shouldReduceMotion={shouldReduceMotion} />
             ))}
           </div>
 
@@ -78,5 +66,31 @@ export function GitHubStats() {
         </div>
       </div>
     </section>
+  );
+}
+
+function StatCard({
+  stat,
+  index,
+  shouldReduceMotion,
+}: {
+  stat: (typeof stats)[number];
+  index: number;
+  shouldReduceMotion: boolean;
+}) {
+  const { ref, inView } = useInView({ disabled: shouldReduceMotion });
+
+  return (
+    <div
+      ref={ref}
+      className={`rounded-2xl border border-border bg-card p-5 text-center transition-[border-color] duration-300 hover:border-accent/20 anim-fade-up-sm ${inView ? 'in-view' : ''}`}
+      style={{ transitionDelay: `${index * 0.05}s` }}
+    >
+      <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10">
+        <stat.icon size={20} className="text-accent" aria-hidden="true" />
+      </div>
+      <div className="text-2xl font-bold text-text-primary">{stat.value}</div>
+      <div className="mt-1 text-xs text-text-muted">{stat.label}</div>
+    </div>
   );
 }

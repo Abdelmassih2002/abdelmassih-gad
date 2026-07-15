@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 
 interface SectionHeadingProps {
   label: string;
@@ -15,16 +15,11 @@ export function SectionHeading({
   align = 'center',
 }: SectionHeadingProps) {
   const shouldReduceMotion = useReducedMotion();
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    if (shouldReduceMotion) { setInView(true); return; }
-    const timer = setTimeout(() => setInView(true), 100);
-    return () => clearTimeout(timer);
-  }, [shouldReduceMotion]);
+  const { ref, inView } = useInView({ disabled: shouldReduceMotion, rootMargin: '0px' });
 
   return (
     <div
+      ref={ref}
       className={`mb-16 transition-[opacity,transform] duration-500 ${align === 'center' ? 'text-center' : 'text-left'} ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}
       style={{ transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)' }}
     >

@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { ScrollProgress } from '@/components/ui/ScrollProgress';
@@ -26,6 +26,37 @@ function Divider() {
   return <div className="section-divider" role="presentation" aria-hidden="true" />;
 }
 
+function LazySection({ children }: { children: React.ReactNode }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const [sentinel, setSentinel] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '400px 0px' }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [sentinel]);
+
+  return (
+    <>
+      <div ref={setSentinel} style={{ height: 0 }} />
+      {isVisible && (
+        <Suspense fallback={<SectionLoader />}>
+          {children}
+        </Suspense>
+      )}
+    </>
+  );
+}
+
 export default function App() {
   return (
     <div className="min-h-screen bg-background text-text-primary animate-fade-in-up">
@@ -36,26 +67,15 @@ export default function App() {
       <Navbar />
       <main id="main-content">
         <Hero />
-        <Suspense fallback={<SectionLoader />}>
-          <Divider />
-          <About />
-          <Divider />
-          <WhatIBuild />
-          <Divider />
-          <TechStack />
-          <Divider />
-          <Experience />
-          <Divider />
-          <Projects />
-          <Divider />
-          <Achievements />
-          <Divider />
-          <Certificates />
-          <Divider />
-          <GitHubStats />
-          <Divider />
-          <Contact />
-        </Suspense>
+        <LazySection><Divider /><About /></LazySection>
+        <LazySection><Divider /><WhatIBuild /></LazySection>
+        <LazySection><Divider /><TechStack /></LazySection>
+        <LazySection><Divider /><Experience /></LazySection>
+        <LazySection><Divider /><Projects /></LazySection>
+        <LazySection><Divider /><Achievements /></LazySection>
+        <LazySection><Divider /><Certificates /></LazySection>
+        <LazySection><Divider /><GitHubStats /></LazySection>
+        <LazySection><Divider /><Contact /></LazySection>
       </main>
       <Footer />
     </div>

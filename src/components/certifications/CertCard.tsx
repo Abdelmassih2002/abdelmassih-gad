@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 import { ExternalLink, Award, Calendar } from 'lucide-react';
 import { TechPill } from '@/components/ui/TechPill';
 import type { Certificate } from '@/types';
@@ -10,18 +11,13 @@ interface CertCardProps {
 
 export function CertCard({ cert, index }: CertCardProps) {
   const shouldReduceMotion = useReducedMotion();
+  const { ref, inView } = useInView({ disabled: shouldReduceMotion, rootMargin: '-40px' });
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{
-        duration: shouldReduceMotion ? 0 : 0.4,
-        delay: shouldReduceMotion ? 0 : Math.min(index * 0.06, 0.3),
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className="cert-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[border-color,box-shadow] duration-300 hover:border-accent/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.06)]"
+    <article
+      ref={ref}
+      className={`cert-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[border-color,box-shadow] duration-300 hover:border-accent/20 hover:shadow-[0_0_40px_rgba(59,130,246,0.06)] anim-fade-up ${inView ? 'in-view' : ''}`}
+      style={{ transitionDelay: `${Math.min(index * 0.06, 0.3)}s` }}
     >
       {/* Glass gradient top bar */}
       <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent/20 to-transparent" aria-hidden="true" />
@@ -100,6 +96,6 @@ export function CertCard({ cert, index }: CertCardProps) {
           )}
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

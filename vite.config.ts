@@ -10,4 +10,21 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    target: 'es2022',
+    cssCodeSplit: true,
+    modulePreload: { polyfill: false },
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom')) return 'vendor';
+          if (id.includes('node_modules/react') && !id.includes('react-dom')) return 'vendor';
+          if (id.includes('node_modules/lucide-react')) return 'icons';
+        },
+      },
+    },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  },
 })

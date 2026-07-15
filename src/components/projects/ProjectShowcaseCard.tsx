@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 import { ArrowUpRight, Calendar, Building2 } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/Icons';
 import { TechPill } from '@/components/ui/TechPill';
@@ -12,21 +13,16 @@ interface ProjectCardProps {
 
 export function ProjectShowcaseCard({ project, index, onSelect }: ProjectCardProps) {
   const shouldReduceMotion = useReducedMotion();
+  const { ref, inView } = useInView({ disabled: shouldReduceMotion, rootMargin: '-40px' });
   const isFeatured = project.featured;
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-40px' }}
-      transition={{
-        duration: shouldReduceMotion ? 0 : 0.5,
-        delay: shouldReduceMotion ? 0 : index * 0.1,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-      className={`project-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[border-color,box-shadow] duration-500 hover:border-accent/20 hover:shadow-[0_0_60px_rgba(59,130,246,0.06)] ${
+    <article
+      ref={ref}
+      className={`project-card group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-[border-color,box-shadow] duration-500 hover:border-accent/20 hover:shadow-[0_0_60px_rgba(59,130,246,0.06)] anim-fade-up ${inView ? 'in-view' : ''} ${
         isFeatured ? 'bento-featured' : ''
       }`}
+      style={{ transitionDelay: `${index * 0.1}s` }}
     >
       {/* Image placeholder */}
       <div
@@ -133,6 +129,6 @@ export function ProjectShowcaseCard({ project, index, onSelect }: ProjectCardPro
           )}
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

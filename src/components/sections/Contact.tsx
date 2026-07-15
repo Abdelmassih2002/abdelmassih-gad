@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useInView } from '@/hooks/useInView';
 import { Send, Mail, Phone, MapPin } from 'lucide-react';
 import { GithubIcon, LinkedinIcon, MailIcon } from '@/components/ui/Icons';
 import { socialLinks, email, phone, location } from '@/data/socials';
@@ -26,6 +27,8 @@ export function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const shouldReduceMotion = useReducedMotion();
+  const infoPanel = useInView({ disabled: shouldReduceMotion });
+  const formPanel = useInView({ disabled: shouldReduceMotion });
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -80,30 +83,25 @@ export function Contact() {
 
         <div className="grid gap-8 lg:grid-cols-5">
           {/* Contact Info */}
-          <div className="space-y-4 lg:col-span-2">
-            <motion.div
-              initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -15 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4 }}
-            >
+          <div
+            ref={infoPanel.ref}
+            className={`space-y-4 lg:col-span-2 anim-fade-left ${infoPanel.inView ? 'in-view' : ''}`}
+          >
+            <div>
               <h3 className="text-lg font-bold text-text-primary">Say Hello</h3>
               <p className="mt-2 text-sm leading-relaxed text-text-muted">
                 The easiest way to reach me is by email. I typically respond within 24 hours.
               </p>
-            </motion.div>
+            </div>
 
             {contactInfo.map((info, i) => (
-              <motion.a
+              <a
                 key={info.label}
                 href={info.href}
                 target={info.href.startsWith('http') ? '_blank' : undefined}
                 rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -15 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.3, delay: shouldReduceMotion ? 0 : i * 0.05 }}
-                className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 transition-[border-color] duration-300 hover:border-accent/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                className={`flex items-center gap-3 rounded-xl border border-border bg-card p-4 transition-[border-color] duration-300 hover:border-accent/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent anim-fade-up-sm ${infoPanel.inView ? 'in-view' : ''}`}
+                style={{ transitionDelay: `${i * 0.05}s` }}
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10">
                   <info.icon size={18} className="text-accent" aria-hidden="true" />
@@ -112,7 +110,7 @@ export function Contact() {
                   <div className="text-xs text-text-muted">{info.label}</div>
                   <div className="truncate text-sm font-medium text-text-primary">{info.value}</div>
                 </div>
-              </motion.a>
+              </a>
             ))}
 
             {/* Social Links */}
@@ -138,12 +136,9 @@ export function Contact() {
           </div>
 
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 15 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.05 }}
-            className="lg:col-span-3"
+          <div
+            ref={formPanel.ref}
+            className={`lg:col-span-3 anim-fade-right ${formPanel.inView ? 'in-view' : ''}`}
           >
             <GlowCard className="h-full">
               <form onSubmit={handleSubmit} className="space-y-5" noValidate aria-label="Contact form">
@@ -248,7 +243,7 @@ export function Contact() {
                 )}
               </form>
             </GlowCard>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { GraduationCap, Building2, Calendar, Code2, ChevronDown } from 'lucide-react';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { CertStatCard } from '@/components/certifications/CertStatCard';
@@ -20,7 +19,6 @@ export function Certificates() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedOrg, setSelectedOrg] = useState('');
   const [showAll, setShowAll] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
 
   const filteredCerts = useMemo(() => {
     let result = certificatesData;
@@ -82,47 +80,35 @@ export function Certificates() {
 
         {/* Results count */}
         {(searchQuery || selectedOrg) && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mb-6 text-sm text-text-muted"
-          >
+          <p className="mb-6 text-sm text-text-muted">
             Showing {filteredCerts.length} of {certificatesData.length} certificates
-          </motion.p>
+          </p>
         )}
 
         {/* Certificate grid */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence mode="popLayout">
-            {visibleCerts.map((cert, i) => (
-              <CertCard key={cert.id} cert={cert} index={i} />
-            ))}
-          </AnimatePresence>
+          {visibleCerts.map((cert, i) => (
+            <CertCard key={cert.id} cert={cert} index={i} />
+          ))}
         </div>
 
         {/* Empty state */}
         {filteredCerts.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center justify-center py-16 text-center"
-          >
+          <div className="flex flex-col items-center justify-center py-16 text-center">
             <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-accent/10">
               <GraduationCap size={28} className="text-accent/40" aria-hidden="true" />
             </div>
             <p className="mt-4 text-sm font-medium text-text-muted">No certificates found</p>
             <p className="mt-1 text-xs text-text-muted/60">Try a different search or filter</p>
-          </motion.div>
+          </div>
         )}
 
         {/* Show more / less */}
         {hasMore && !searchQuery && !selectedOrg && (
           <div className="mt-10 flex justify-center">
-            <motion.button
+            <button
               onClick={() => setShowAll((prev) => !prev)}
-              whileHover={shouldReduceMotion ? undefined : { scale: 1.02 }}
-              whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/50 px-6 py-3 text-sm font-medium text-text-muted transition-[border-color,color] duration-200 hover:border-accent/30 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card/50 px-6 py-3 text-sm font-medium text-text-muted transition-[border-color,color] duration-200 hover:border-accent/30 hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98]"
             >
               {showAll
                 ? 'Show Less'
@@ -132,7 +118,7 @@ export function Certificates() {
                 className={`transition-transform duration-300 ${showAll ? 'rotate-180' : ''}`}
                 aria-hidden="true"
               />
-            </motion.button>
+            </button>
           </div>
         )}
       </div>

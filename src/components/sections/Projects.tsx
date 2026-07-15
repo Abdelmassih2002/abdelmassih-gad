@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { ProjectShowcaseCard } from '@/components/projects/ProjectShowcaseCard';
 import { ProjectModal } from '@/components/projects/ProjectModal';
@@ -34,14 +33,12 @@ export function Projects() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectModal
-            project={selectedProject}
-            onClose={handleClose}
-          />
-        )}
-      </AnimatePresence>
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={handleClose}
+        />
+      )}
     </section>
   );
 }

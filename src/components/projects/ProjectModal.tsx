@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import { X, ExternalLink, Calendar, Building2, User, AlertTriangle } from 'lucide-react';
 import { GithubIcon } from '@/components/ui/Icons';
 import { TechPill } from '@/components/ui/TechPill';
@@ -13,16 +12,17 @@ interface ProjectModalProps {
 export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     closeButtonRef.current?.focus();
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => setIsOpen(true));
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        handleClose();
         return;
       }
       if (e.key === 'Tab' && modalRef.current) {
@@ -50,28 +50,25 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalOverflow;
     };
-  }, [onClose]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setTimeout(onClose, 200);
+  };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: shouldReduceMotion ? 0 : 0.2 }}
-      onClick={onClose}
-      className="fixed inset-0 z-200 flex items-start justify-center overflow-y-auto bg-background/80 p-4 pt-[5vh] pb-[5vh] backdrop-blur-xl sm:items-center sm:p-8 sm:pt-[8vh]"
+    <div
+      onClick={handleClose}
+      className={`fixed inset-0 z-200 flex items-start justify-center overflow-y-auto bg-background/80 p-4 pt-[5vh] pb-[5vh] backdrop-blur-xl sm:items-center sm:p-8 sm:pt-[8vh] anim-fade ${isOpen ? 'open' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label={`Project details: ${project.title}`}
     >
-      <motion.div
+      <div
         ref={modalRef}
-        initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.97, y: 12 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.97, y: 12 }}
-        transition={{ duration: shouldReduceMotion ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-3xl rounded-2xl border border-border bg-card shadow-2xl shadow-background/50"
+        className={`relative w-full max-w-3xl rounded-2xl border border-border bg-card shadow-2xl shadow-background/50 anim-modal-in ${isOpen ? 'open' : ''}`}
       >
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-card/90 px-6 py-4 backdrop-blur-md sm:px-8">
@@ -90,7 +87,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           </div>
           <button
             ref={closeButtonRef}
-            onClick={onClose}
+            onClick={handleClose}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-text-muted transition-colors duration-200 hover:bg-accent/10 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             aria-label="Close dialog"
           >
@@ -203,7 +200,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             )}
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
