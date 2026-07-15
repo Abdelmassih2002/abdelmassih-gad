@@ -1,7 +1,6 @@
 const techIcons: Record<string, string> = {
   React: '⚛️',
   'Next.js': '▲',
-  JavaScript: 'JS',
   TypeScript: 'TS',
   HTML5: '<>',
   CSS3: '#',
@@ -20,7 +19,35 @@ const techIcons: Record<string, string> = {
   PHP: '🐘',
   Angular: '🅰️',
   'Performance Optimization': '🚀',
+  'Unit Testing': '🧪',
+  'Integration Testing': '🔗',
+  'End-to-End Testing': '🧩',
+  'Continuous Integration': '🔄',
+  'Continuous Deployment': '🚀',
+  'Code Review': '🔍',
+  'Agile Methodologies': '🏃‍♂️',
+  'Scrum Framework': '📋',
+  'Kanban Board': '🗂️',
+  'Version Control': '🔧',
+  OOP: '🧩',
+  CSS: '🎨',
+  Python: '🐍',
+  Django: '🌐',
+  Flask: '🍶',
+  Ruby: '💎',
+  HTML: '🌐',
+  'React.js': '⚛️',
+  'React Hooks': '🔗',
+  'Node.js': '🟢',
+  Algorithms: '📊',
+  JavaScript: '🟨',
+  'Data Structures': '🗂️',
+  'Responsive Design': '📱',
+  PowerPoint: '📊',
+  'Microsoft Office': '💼',
+  'Software Engineering': '💻',
 };
+
 
 export function getTechIcon(name: string): string {
   return techIcons[name] ?? name.slice(0, 2).toUpperCase();
