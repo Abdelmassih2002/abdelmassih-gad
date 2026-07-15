@@ -59,7 +59,7 @@ function LazySection({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-background text-text-primary animate-fade-in-up">
+    <div className="min-h-screen bg-background text-text-primary">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
